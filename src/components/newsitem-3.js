@@ -5,7 +5,8 @@ import News from "./news";
 import Spinner from "./spinner";
 export default class Newsitem extends Component {
   static defaultProps = {
-    pageSize: "10",
+    pageSize: "10",  
+    // pageSize mtlb 10 articles perpage
     countryName: "in",
     category: "sports",
   };
@@ -27,7 +28,8 @@ export default class Newsitem extends Component {
   }
 
   async getData() {
-    // this.setState({ loading: true });
+    alert(this.props.category)
+    this.setState({ loading: true });
     const url = `https://newsapi.org/v2/top-headlines?country=${this.props.countryName}&category=${this.props.category}&apiKey=21ee09d47b1c4781a51dc5e1d42d0657&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parshedData = await data.json();
@@ -36,23 +38,24 @@ export default class Newsitem extends Component {
   //componentDidMount is used to display the content initially by calling getData()
   //aur getData() mai state change ho raha hai to component fir se render ho jayega.
   async componentDidMount() {
+    // alert("comp did mount")
     this.setstate = {
       page: 1,
       // category:this.props.category,
     };
     this.getData();
   }
-  // handleNextClick = async () => {
-  //   let nextPage = this.state.page + 1;
-  //    this.setState({ page: nextPage });
-  //   await this.getData();
-  // };
-  // handlePrevClick = async () => {
-  //   let prevPage = this.state.page - 1;
+  handleNextClick = async () => {
+    let nextPage = this.state.page + 1;
+     this.setState({ page: nextPage });
+    await this.getData();
+  };
+  handlePrevClick = async () => {
+    let prevPage = this.state.page - 1;
 
-  //   this.getData();
-  //   this.setState({ page: prevPage });
-  // };
+    this.getData();
+    this.setState({ page: prevPage });
+  };
   render() {
     return (
       <div className="container my-3">
